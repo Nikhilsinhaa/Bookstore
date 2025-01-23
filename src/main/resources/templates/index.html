@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bookstore Home</title>
+    <link rel="stylesheet" href="/css/styles.css"> <!-- Link to your CSS -->
+</head>
+<body>
+    <header>
+        <h1>Welcome to the Bookstore</h1>
+        <div id="header">
+            <!-- Dynamic content will be loaded here -->
+        </div>
+    </header>
+
+    <div class="container">
+        <h2>Available Books</h2>
+        <div id="book-list">
+            <!-- Books will be dynamically rendered here -->
+            <div th:each="book : ${books}">
+                <h4 th:text="${book.title}"></h4>
+                <p th:text="'Author: ' + ${book.author}"></p>
+                <p th:text="'Price: $' + ${book.price}"></p>
+                <a th:href="@{/books/{id}(id=${book.id})}">View Details</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Check if the user is logged in
+        fetch('/api/auth/check')
+            .then(response => response.json())
+            .then(data => {
+                const header = document.getElementById('header');
+                if (data.loggedIn) {
+                    header.innerHTML = `
+                        <img src="/avatar.png" alt="Avatar" style="width:40px;height:40px;">
+                        <a href="/profile">Profile</a> |
+                        <a href="/api/auth/logout">Logout</a>
+                    `;
+                } else {
+                    header.innerHTML = `
+                        <a href="/login">Login</a> |
+                        <a href="/register">Register</a>
+                    `;
+                }
+            });
+    </script>
+</body>
+</html>

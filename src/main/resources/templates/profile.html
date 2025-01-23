@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Profile</title>
+</head>
+<body>
+
+<h1>Your Profile</h1>
+
+<div id="profile-info"></div>
+
+<h2>Your Orders</h2>
+<ul id="orders-list"></ul>
+
+<a href="/api/auth/logout">Logout</a>
+
+<script>
+// Fetch profile details
+fetch('/api/profile')
+    .then(response => response.json())
+    .then(data => {
+        const profileInfo = document.getElementById('profile-info');
+        profileInfo.innerHTML = `
+            <p>Username: ${data.username}</p>
+            <p>Email: ${data.email}</p>
+        `;
+
+        const ordersList = document.getElementById('orders-list');
+        data.orders.forEach(order => {
+            const listItem = document.createElement('li');
+            listItem.textContent = `Order ID: ${order.id}, Total Price: $${order.totalPrice}`;
+            ordersList.appendChild(listItem);
+        });
+    })
+    .catch(error => console.error('Error:', error));
+</script>
+
+</body>
+</html>

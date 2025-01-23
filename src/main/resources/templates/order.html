@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Orders</title>
+</head>
+<body>
+
+<h1>Your Orders</h1>
+
+<ul id="orders-list"></ul>
+
+<a href="/">Back to Home</a>
+
+<script>
+// Fetch orders
+fetch('/api/orders')
+    .then(response => response.json())
+    .then(orders => {
+        const ordersList = document.getElementById('orders-list');
+        orders.forEach(order => {
+            const listItem = document.createElement('li');
+            listItem.innerHTML = `Order ID: ${order.id}, Total Price: $${order.totalPrice}`;
+            ordersList.appendChild(listItem);
+        });
+    })
+    .catch(error => console.error('Error:', error));
+</script>
+
+</body>
+</html>

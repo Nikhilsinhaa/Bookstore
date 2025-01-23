@@ -1,0 +1,16 @@
+<div id="books">
+    <!-- Books list will load here -->
+</div>
+
+<script>
+    fetch('/api/books')
+        .then(response => response.json())
+        .then(data => {
+            const booksDiv = document.getElementById('books');
+            data.forEach(book => {
+                const bookElement = document.createElement('div');
+                bookElement.innerHTML = `<h3>${book.title}</h3><p>${book.description}</p>`;
+                booksDiv.appendChild(bookElement);
+            });
+        });
+</script>
