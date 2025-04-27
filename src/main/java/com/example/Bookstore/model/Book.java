@@ -25,8 +25,20 @@ public class Book {
 
     @Column(nullable = false)
     private double price;
+    
+    @Column
+    private String imageUrl;
 
-    @ManyToOne
+
+    public String getImageUrl() {
+		return imageUrl;
+	}
+
+	public void setImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
+	}
+
+	@ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
 

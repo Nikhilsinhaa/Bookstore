@@ -5,20 +5,49 @@ import com.example.Bookstore.model.Order;
 import com.example.Bookstore.model.User;
 import com.example.Bookstore.repository.OrderRepository;
 import com.example.Bookstore.repository.UserRepository;
+import com.example.Bookstore.service.UserService;
+
+import jakarta.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/profile")
+@RequestMapping("/api/users")
 public class UserController {
+	 @Autowired
+	    private UserService userService;
 
-    @Autowired
+	    @PostMapping("/register")
+	    public ResponseEntity<User> register(@RequestBody User user) {
+	        return ResponseEntity.ok(userService.register(user));
+	    }
+
+	    @PostMapping("/login")
+	    public ResponseEntity<?> login(@RequestBody LoginDTO loginDTO) {
+	        return userService.login(loginDTO);
+	    }
+
+	    @GetMapping("/{username}")
+	    public ResponseEntity<User> getUser(@PathVariable String username) {
+	        return ResponseEntity.ok(userService.getUserByUsername(username));
+	    }
+	}
+
+
+
+    /*@Autowired
     private UserRepository userRepository;
 
     @Autowired
@@ -74,5 +103,5 @@ public class UserController {
         
         // Getters and Setters
     }
-}
+}*/
 

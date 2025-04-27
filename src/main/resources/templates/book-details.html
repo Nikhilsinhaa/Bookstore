@@ -4,41 +4,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Book Details</title>
+    <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
+    <header>
+        <h1>Book Details</h1>
+    </header>
 
-<h1 id="book-title"></h1>
+    <div id="book-details"></div>
 
-<p id="book-author"></p>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const params = new URLSearchParams(window.location.search);
+            const bookId = params.get("id");
 
-<p id="book-description"></p>
-
-<p id="book-price"></p>
-
-<button onclick="addToOrder()">Add to Order</button>
-
-<a href="/">Back to Home</a>
-
-<script>
-// Get the book ID from the URL
-const urlParams = new URLSearchParams(window.location.search);
-const bookId = urlParams.get('id');
-
-// Fetch book details
-fetch(`/api/books/${bookId}`)
-  .then(response => response.json())
-  .then(book => {
-      document.getElementById('book-title').textContent = book.title;
-      document.getElementById('book-author').textContent = `Author: ${book.author}`;
-      document.getElementById('book-description').textContent = `Description: ${book.description}`;
-      document.getElementById('book-price').textContent = `Price: $${book.price}`;
-  });
-
-function addToOrder() {
-  // Logic to add the selected book to the order
-  alert("Book added to order!");
-}
-</script>
-
+            fetch(`/api/books/${bookId}`)
+                .then(response => response.json())
+                .then(book => {
+                    if (!book) {
+                        document.getElementById("book-details").innerHTML = "<p>Book not found</p>";
+                        return;
+                    }
+                    document.getElementById("book-details").innerHTML = `
+                        <h2>${book.title}</h2>
+                        <p><strong>Author:</strong> ${book.author}</p>
+                        <p><strong>Price:</strong> $${book.price}</p>
+                        <p><strong>Description:</strong> ${book.description}</p>
+                    `;
+                })
+                .catch(error => console.error("Error fetching book:", error));
+        });
+    </script>
 </body>
 </html>

@@ -1,25 +1,36 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>Login - BookStore</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-    <h1>Login</h1>
+<div class="container mt-5">
+    <h2 class="text-center">Login</h2>
 
-    <form action="/api/auth/login" method="post">
-        <label for="username">Username:</label><br>
-        <input type="text" id="username" name="username" required><br><br>
+    <form th:action="@{/user/login}" th:method="post" class="mt-4">
 
-        <label for="password">Password:</label><br>
-        <input type="password" id="password" name="password" required><br><br>
+        <div class="mb-3">
+            <label>Username:</label>
+            <input type="text" name="username" class="form-control" required>
+        </div>
 
-        <input type="submit" value="Login">
+        <div class="mb-3">
+            <label>Password:</label>
+            <input type="password" name="password" class="form-control" required>
+        </div>
+
+        <button type="submit" class="btn btn-success w-100">Login</button>
+
     </form>
 
-    <p th:if="${error}" th:text="${error}"></p> <!-- Display error message if exists -->
-    
-    <p>Don't have an account? <a href="/register">Register here</a>.</p>
+    <div class="text-center mt-3">
+        <p>Don't have an account? <a th:href="@{/user/register}">Register here</a>
+</p>
+    </div>
+
+    <div th:if="${error}" class="alert alert-danger mt-3" th:text="${error}"></div>
+    <div th:if="${success}" class="alert alert-success mt-3" th:text="${success}"></div>
+</div>
 </body>
 </html>
