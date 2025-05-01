@@ -1,0 +1,50 @@
+:root {
+    --tangy-orange: #DC6D18;
+    --ivory-pearl: #FFF4E4;
+    --cream-pop: #F8E0C9;
+    --almost-black: #2B1A12;
+    --limestone: #B1AA81;
+}
+
+body {
+    background-color: var(--ivory-pearl);
+    color: var(--almost-black);
+}
+
+.navbar {
+    background-color: var(--almost-black) !important;
+}
+
+.sidebar {
+    background-color: var(--cream-pop);
+}
+
+.card {
+    border: 1px solid var(--limestone);
+    background-color: white;
+}
+
+.btn-primary {
+    background-color: var(--tangy-orange);
+    border-color: var(--tangy-orange);
+}
+
+.btn-primary:hover {
+    background-color: #C45E15;
+    border-color: #C45E15;
+}
+
+.hero-banner {
+    background: linear-gradient(rgba(43, 26, 18, 0.8), rgba(43, 26, 18, 0.8)), 
+                url('/images/hero-books.jpg');
+}
+
+/* Image placeholder styling */
+.book-placeholder {
+    height: 200px;
+    background-color: var(--cream-pop);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--tangy-orange);
+}

@@ -1,60 +1,35 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Home - BookStore</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Home - Bookstore</title><link rel="stylesheet" type="text/css" href="/css/style.css">
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="/">BookStore</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/order">Orders</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/profile">Profile</a>
-                    </li>
-                </ul>
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/user/login">Login</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/user/register">Register</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
 
-    <div class="container mt-5">
-        <h1 class="text-center mb-4">📚 Welcome to BookStore</h1>
+<nav>
+    <a th:href="@{/}">Home</a>
+    <a th:href="@{/books}">All Books</a>
+    <a th:href="@{/profile}">Profile</a>
+    <a th:href="@{/order}">Orders</a>
+    <a th:href="@{/user/logout}">Logout</a>
+</nav>
 
-        <div class="row row-cols-1 row-cols-md-3 g-4">
-            <div class="col" th:each="book : ${books}">
-                <div class="card h-100">
-                    <img th:src="${book.imageUrl}" class="card-img-top" alt="Book Cover" style="height: 300px; object-fit: cover;">
-                    <div class="card-body">
-                        <h5 class="card-title" th:text="${book.title}"></h5>
-                        <p class="card-text" th:text="${book.author}"></p>
-                        <p class="card-text fw-bold" th:text="'$' + ${book.price}"></p>
-                        <form th:action="@{'/order/place/' + ${book.id}}" method="post">
-                            <button type="submit" class="btn btn-primary">Order Now</button>
-                        </form>
-                    </div>
-                </div>
+<div class="container">
+    <h1>Welcome to the Bookstore!</h1>
+
+    <div th:if="${books}">
+        <div class="book-grid">
+            <div class="book-card" th:each="book : ${books}">
+                <img class="book-image" th:src="${book.imageUrl}" alt="Book Image">
+                <div class="book-title" th:text="${book.title}">Book Title</div>
+                <div class="book-author" th:text="${book.author}">Author</div>
+                <div class="book-price">₹<span th:text="${book.price}">Price</span></div>
+                <form th:action="@{'/order/place/' + ${book.id}}" method="post">
+                    <button type="submit">Order</button>
+                </form>
             </div>
         </div>
     </div>
+</div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

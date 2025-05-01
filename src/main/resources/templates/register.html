@@ -1,26 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register</title>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><title>Register</title>
+<link rel="stylesheet" type="text/css" href="/css/style.css">
 </head>
 <body>
     <h1>Register</h1>
-
-    <form action="user/register" method="post">
-        <label for="username">Username:</label><br>
-        <input type="text" id="username" name="username" required><br><br>
-
-        <label for="email">Email:</label><br>
-        <input type="email" id="email" name="email" required><br><br>
-
-        <label for="password">Password:</label><br>
-        <input type="password" id="password" name="password" required><br><br>
-
-        <input type="submit" value="Register">
+    <form th:action="@{/user/register}" method="post">
+        <label>Username: <input type="text" name="username"/></label><br/>
+        <label>Password: <input type="password" name="password"/></label><br/>
+        <label>Email: <input type="email" name="email"/></label><br/>
+        <button type="submit">Register</button>
     </form>
-
-    <p>Already have an account? <a href="/user/login">Login here</a>.</p>
+    <div th:if="${success}" th:text="${success}" style="color:green;"></div>
+    <a th:href="@{/user/login}">Login</a>
 </body>
 </html>

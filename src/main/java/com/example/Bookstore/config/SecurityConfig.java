@@ -1,24 +1,20 @@
 package com.example.Bookstore.config;
 
+import com.example.Bookstore.model.User;
+import com.example.Bookstore.repository.UserRepository;
 
-import java.util.ArrayList;
+import java.util.Collections;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.Customizer;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-
-import com.example.Bookstore.model.User;
-import com.example.Bookstore.repository.UserRepository;
 
 @Configuration
 @EnableWebSecurity
@@ -29,45 +25,46 @@ public class SecurityConfig {
         http
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/", "/index.html", "/login.html", "/register.html",
-                        "/order.html", "/profile.html", "/js/**", "/css/**", 
-                        "/images/**").permitAll()
-                .requestMatchers("/api/users/register", "/api/users/login").permitAll()
+                .requestMatchers(
+                    "/", "/index", "/user/login","/user/login*", "/user/register",
+                    "/css/**", "/js/**", "/images/**",
+                    "/api/users/**"
+                ).permitAll()
                 .anyRequest().authenticated()
             )
-            .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-            .httpBasic(Customizer.withDefaults());
-
+            .formLogin(form -> form
+                .loginPage("/user/login")
+                .loginProcessingUrl("/user/login") // Must match form action
+                .defaultSuccessUrl("/", true)
+                .permitAll()
+            )
+            .logout(logout -> logout
+                .logoutUrl("/user/logout")
+                .logoutSuccessUrl("/")
+                .permitAll()
+            );
+        
         return http.build();
     }
 
-    // Dummy user details service for testing, replace with real DB access
     @Bean
     public UserDetailsService userDetailsService(UserRepository userRepository) {
         return username -> {
             User user = userRepository.findByUsername(username);
-            if (user == null) throw new UsernameNotFoundException("User not found");
-
+            if(user == null) throw new UsernameNotFoundException("User not found");
+            
+            // Default authority for all users
             return new org.springframework.security.core.userdetails.User(
                 user.getUsername(),
                 user.getPassword(),
-                new ArrayList<>()
+                Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER")) // Add default role
             );
         };
     }
 
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
-    }
-
-    @Bean
-    public AuthenticationManager authManager(HttpSecurity http, PasswordEncoder passwordEncoder, UserDetailsService userDetailsService)
-            throws Exception {
-        return http.getSharedObject(AuthenticationManagerBuilder.class)
-            .userDetailsService(userDetailsService)
-            .passwordEncoder(passwordEncoder)
-            .and()
-            .build();
     }
 }

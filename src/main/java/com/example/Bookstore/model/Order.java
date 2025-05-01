@@ -72,6 +72,13 @@ public class Order {
 	public Set<OrderItem> getOrderItems() {
 		return orderItems;
 	}
+	private String status = "Placed";  // Default value
+	public String getStatus() {
+	    return status;
+	}
+	public void setStatus(String status) {
+	    this.status = status;
+	}
 
 	public void setOrderItems(Set<OrderItem> orderItems) {
 		this.orderItems = orderItems;

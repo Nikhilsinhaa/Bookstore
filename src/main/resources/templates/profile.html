@@ -1,31 +1,18 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Profile - BookStore</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
+<link rel="stylesheet" type="text/css" href="/css/style.css">
+
+<head><title>Your Profile</title></head>
 <body>
-    <div class="container mt-5">
-        <h1 class="text-center mb-4">👤 User Profile</h1>
+<h1>User Profile</h1>
+<p><strong>Username:</strong> <span th:text="${user.username}"></span></p>
+<p><strong>Email:</strong> <span th:text="${user.email}"></span></p>
 
-        <div th:if="${user}" class="card">
-            <div class="card-body">
-                <h5 class="card-title" th:text="${user.username}"></h5>
-                <p class="card-text"><strong>Email:</strong> <span th:text="${user.email}"></span></p>
-                <!-- Display other user details as needed -->
-            </div>
-        </div>
-
-        <div th:unless="${user}" class="alert alert-danger" role="alert">
-            Please login to view your profile.
-        </div>
-
-        <div class="text-center mt-4">
-            <a href="/" class="btn btn-primary">Home</a>
-            <a href="/order" class="btn btn-warning">Orders</a>
-        </div>
-    </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<h2>Your Reviews</h2>
+<ul>
+    <li th:each="review : ${user.reviews}">
+        <p th:text="${review.comment}"></p>
+    </li>
+</ul>
 </body>
 </html>

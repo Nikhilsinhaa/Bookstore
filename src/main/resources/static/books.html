@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="${title}"></title>
+    <th:block th:replace="~{fragments/header :: header}"></th:block>
+</head>
+<body>
+<div th:replace="~{fragments/header :: header}"></div>
+
+<div class="container mt-5">
+    <h1 th:text="${title}"></h1>
+    
+    <div class="row mt-4">
+        <div class="col-md-4 mb-4" th:each="book : ${books}">
+            <div class="card h-100">
+                <img th:src="${book.imageUrl}" class="card-img-top" style="height: 200px; object-fit: cover;">
+                <div class="card-body">
+                    <h5 class="card-title" th:text="${book.title}"></h5>
+                    <p class="card-text" th:text="${book.author}"></p>
+                    <p class="text-success" th:text="'₹' + ${#numbers.formatDecimal(book.price, 1, 2)}"></p>
+                </div>
+                <div class="card-footer">
+                    <a th:href="@{'/order/place/' + ${book.id}}" class="btn btn-primary">Order Now</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>
