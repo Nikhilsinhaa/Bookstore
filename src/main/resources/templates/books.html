@@ -8,7 +8,7 @@
 <div th:each="book : ${books}">
     <h2 th:text="${book.title}"></h2>
     <p><strong>Author:</strong> <span th:text="${book.author}"></span></p>
-    <p><strong>Price:</strong> ₹<span th:text="${book.price}"></span></p>
+    <p><strong>Price:</strong> $<span th:text="${book.price}"></span></p>
     <img th:src="${book.imageUrl}" alt="Book Cover" width="100"/>
     <p th:text="${book.description}"></p>
     <form th:action="@{/order/place/{id}(id=${book.id})}" method="post">

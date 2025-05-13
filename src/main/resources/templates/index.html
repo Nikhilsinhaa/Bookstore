@@ -22,7 +22,7 @@
                 <img class="book-image" th:src="${book.imageUrl}" alt="Book Image">
                 <div class="book-title" th:text="${book.title}">Book Title</div>
                 <div class="book-author" th:text="${book.author}">Author</div>
-                <div class="book-price">₹<span th:text="${book.price}">Price</span></div>
+                <div class="book-price">$<span th:text="${book.price}">Price</span></div>
                 <form th:action="@{'/order/place/' + ${book.id}}" method="post">
                     <button type="submit">Order</button>
                 </form>
